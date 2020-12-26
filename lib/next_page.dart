@@ -1,8 +1,39 @@
-import 'dart:io';
+import 'dart:math';
+import 'dart:js' as js;
+import 'dart:html' as html;
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
-class NextPage extends StatelessWidget {
+class NextPage extends StatefulWidget {
+  @override
+  _NextPageState createState() => _NextPageState();
+}
+
+class _NextPageState extends State<NextPage> {
+  var image;
+  var image_url;
+  @override
+  void initState() {
+    // TODO: implement initState
+    var rng_num = new Random().nextInt(5);
+    var image_num = rng_num.toString();
+    if (rng_num < 10) {
+      image_num = "0" + rng_num.toString();
+    }
+    image = Image.network('assets/img/card_$image_num.jpeg');
+    image_url = 'assets/img/card_$image_num.jpeg';
+    // image =
+    //     Image.network('https://dream-web-97613.web.app/assets/img/card_1.jpeg');
+
+    super.initState();
+  }
+
+  void _saveImage(url) async {
+    var response = await get(url);
+    print(response);
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -20,11 +51,13 @@ class NextPage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.network('assets/img/card_1.jpeg'),
+                      image,
                       // 카카오톡 공유하기
                       // 다시 뽑기
                       // 이미지 저장하기
-                      Buttons()
+                      Buttons(
+                        image_url: image_url,
+                      )
                     ],
                   ),
                 )),
@@ -35,10 +68,25 @@ class NextPage extends StatelessWidget {
   }
 }
 
-class Buttons extends StatelessWidget {
-  const Buttons({
-    Key key,
-  }) : super(key: key);
+class Buttons extends StatefulWidget {
+  final String image_url;
+
+  const Buttons({Key key, @required this.image_url}) : super(key: key);
+
+  @override
+  _ButtonsState createState() => _ButtonsState();
+}
+
+class _ButtonsState extends State<Buttons> {
+  void _saveImage(url) async {
+    var response = await get(url);
+    final DateTime now = DateTime.now();
+    print(now);
+    js.context.callMethod("webSaveAs", [
+      html.Blob([response.bodyBytes]),
+      "$now.jpg"
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,11 +137,13 @@ class Buttons extends StatelessWidget {
                   ),
                 ))),
         Container(
-            margin: const EdgeInsets.only(top: 20),
+            margin: const EdgeInsets.only(top: 20, bottom: 20),
             child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),
-                onPressed: () {},
+                onPressed: () async {
+                  _saveImage(widget.image_url);
+                },
                 color: Colors.amber,
                 child: Padding(
                   padding: const EdgeInsets.all(13),

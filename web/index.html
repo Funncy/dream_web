@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -22,13 +23,15 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="dream_web">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/amcharts/3.21.15/plugins/export/libs/FileSaver.js/FileSaver.min.js"></script>
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>dream_web</title>
   <link rel="manifest" href="manifest.json">
 </head>
+
 <body>
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
@@ -40,6 +43,17 @@
       });
     }
   </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js">
+  </script>
+
+  <script>
+    function webSaveAs(blob, name) {
+      console.log(name);
+      saveAs(blob, name);
+    }
+  </script>
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
+
 </html>

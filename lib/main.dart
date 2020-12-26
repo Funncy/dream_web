@@ -1,3 +1,4 @@
+import 'package:dream_web/first_page.dart';
 import 'package:dream_web/next_page.dart';
 import 'package:flutter/material.dart';
 
@@ -5,11 +6,9 @@ void main() {
   runApp(MyApp());
 }
 
-// TODO: 이미지 로드 확인
-// TODO: 반응형 이미지 조절 (스크롤 되도록)
 // TODO: 이미지 다운로드
-// TODO: FireStore 연결
 // TODO: 카카오톡 링크 연결
+// TODO : 2초 로딩 만들기 (보류 - 디자인...)
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -20,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MainBody(),
+      home: FirstPage(),
     );
   }
 }
@@ -31,14 +30,12 @@ class MainBody extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
-        height: size.height,
         child: Center(
           child: SingleChildScrollView(
             child: Container(
               constraints: BoxConstraints(
                 maxWidth: 450,
               ),
-              height: size.height,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [TopBody(), BottomBody()],
