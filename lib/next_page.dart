@@ -7,6 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dream_web/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:speech_bubble/speech_bubble.dart';
 
 class NextPage extends StatefulWidget {
   @override
@@ -259,7 +260,13 @@ class _ButtonsState extends State<Buttons> {
                       ),
                     ),
                   ),
-                )))
+                ))),
+        SpeechBubble(
+            color: Colors.amber,
+            nipLocation: NipLocation.TOP,
+            child: Container(
+              child: Text("이미지가 뜨면 화면을 꾹 눌러주세요. 이미지 저장이 가능합니다."),
+            ))
       ],
     );
   }
