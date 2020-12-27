@@ -96,10 +96,21 @@ class BottomBody extends StatelessWidget {
   }
 }
 
-class TopBody extends StatelessWidget {
+class TopBody extends StatefulWidget {
   const TopBody({
     Key key,
   }) : super(key: key);
+
+  @override
+  _TopBodyState createState() => _TopBodyState();
+}
+
+class _TopBodyState extends State<TopBody> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

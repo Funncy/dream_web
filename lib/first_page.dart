@@ -1,7 +1,25 @@
 import 'package:dream_web/next_page.dart';
 import 'package:flutter/material.dart';
 
-class FirstPage extends StatelessWidget {
+class FirstPage extends StatefulWidget {
+  @override
+  _FirstPageState createState() => _FirstPageState();
+}
+
+class _FirstPageState extends State<FirstPage> {
+  var lightImage;
+  var titleImage;
+  var logoImage;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    lightImage = Image.network('assets/img/main_light.png');
+    titleImage = Image.network('assets/img/title.png');
+    logoImage = Image.network('assets/img/dream_logo.jpg');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -22,13 +40,11 @@ class FirstPage extends StatelessWidget {
                   children: [
                     Container(
                       alignment: Alignment.bottomCenter,
-                      child: Container(
-                          width: 300,
-                          child: Image.network('assets/img/dream_logo.jpg')),
+                      child: Container(width: 300, child: logoImage),
                     ),
                     Container(
                       alignment: Alignment.topCenter,
-                      child: Image.network('assets/img/main_light.png'),
+                      child: lightImage,
                     ),
                     Container(
                       alignment: Alignment.center,
@@ -36,9 +52,7 @@ class FirstPage extends StatelessWidget {
                         height: 200,
                         child: Column(
                           children: [
-                            Container(
-                                width: 200,
-                                child: Image.network('assets/img/title.png')),
+                            Container(width: 200, child: titleImage),
                             Padding(
                               padding: const EdgeInsets.only(top: 20),
                               child: Text(
