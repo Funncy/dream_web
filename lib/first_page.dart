@@ -24,51 +24,53 @@ class _FirstPageState extends State<FirstPage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Center(
-        child: Container(
-          constraints:
-              BoxConstraints(maxWidth: 450, maxHeight: 900, minHeight: 550),
-          decoration: BoxDecoration(color: Colors.amber),
-          height: size.height,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                height: 400,
-                child: Stack(
-                  children: [
-                    Container(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(width: 300, child: logoImage),
-                    ),
-                    Container(
-                      alignment: Alignment.topCenter,
-                      child: lightImage,
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      child: Container(
-                        height: 200,
-                        child: Column(
-                          children: [
-                            Container(width: 200, child: titleImage),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: Text(
-                                '지인들과 함께 내게 주신 말씀을 나눠보세요!',
-                                style: TextStyle(fontSize: 13),
-                              ),
-                            )
-                          ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Container(
+            constraints:
+                BoxConstraints(maxWidth: 450, maxHeight: 900, minHeight: 550),
+            decoration: BoxDecoration(color: Colors.amber),
+            height: size.height,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  height: 400,
+                  child: Stack(
+                    children: [
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(width: 300, child: logoImage),
+                      ),
+                      Container(
+                        alignment: Alignment.topCenter,
+                        child: lightImage,
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: Container(
+                          height: 200,
+                          child: Column(
+                            children: [
+                              Container(width: 200, child: titleImage),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20),
+                                child: Text(
+                                  '지인들과 함께 내게 주신 말씀을 나눠보세요!',
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Center(child: BottomButton())
-            ],
+                Center(child: BottomButton())
+              ],
+            ),
           ),
         ),
       ),

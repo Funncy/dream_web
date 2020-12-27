@@ -56,9 +56,7 @@ class _NextPageState extends State<NextPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                      height: 100,
-                      width: 100,
-                      child: LinearProgressIndicator()),
+                      height: 10, width: 100, child: LinearProgressIndicator()),
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: Text("말씀을 뽑는 중이에요~"),
@@ -261,12 +259,15 @@ class _ButtonsState extends State<Buttons> {
                     ),
                   ),
                 ))),
-        SpeechBubble(
-            color: Colors.amber,
-            nipLocation: NipLocation.TOP,
-            child: Container(
-              child: Text("이미지가 뜨면 화면을 꾹 눌러주세요. 이미지 저장이 가능합니다."),
-            ))
+        Container(
+          margin: const EdgeInsets.only(bottom: 20),
+          child: SpeechBubble(
+              color: Colors.amber,
+              nipLocation: NipLocation.TOP,
+              child: Container(
+                child: Text("이미지가 뜨면 화면을 꾹 눌러주세요. 이미지 저장이 가능합니다."),
+              )),
+        )
       ],
     );
   }

@@ -123,57 +123,8 @@ class _WidgetFlipperState extends State<WidgetFlipper>
           animation: _frontRotation,
           child: widget.frontWidget,
         ),
-        _tapDetectionControls(),
       ],
     );
-  }
-
-  Widget _tapDetectionControls() {
-    return Stack(
-      fit: StackFit.expand,
-      children: <Widget>[
-        GestureDetector(
-          onTap: _leftRotation,
-          child: FractionallySizedBox(
-            widthFactor: 0.5,
-            heightFactor: 1.0,
-            alignment: Alignment.topLeft,
-            child: Container(
-              color: Colors.transparent,
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: _rightRotation,
-          child: FractionallySizedBox(
-            widthFactor: 0.5,
-            heightFactor: 1.0,
-            alignment: Alignment.topRight,
-            child: Container(
-              color: Colors.transparent,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  void _leftRotation() {
-    _toggleSide();
-  }
-
-  void _rightRotation() {
-    _toggleSide();
-  }
-
-  void _toggleSide() {
-    if (isVisible) {
-      widget.controller.forward();
-      isVisible = false;
-    } else {
-      widget.controller.reverse();
-      isVisible = true;
-    }
   }
 }
 
