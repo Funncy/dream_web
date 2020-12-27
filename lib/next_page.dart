@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 import 'dart:js' as js;
 import 'dart:html' as html;
@@ -16,7 +17,7 @@ class _NextPageState extends State<NextPage> {
   @override
   void initState() {
     // TODO: implement initState
-    var rng_num = new Random().nextInt(5);
+    var rng_num = new Random().nextInt(5 - 1) + 1;
     var image_num = rng_num.toString();
     if (rng_num < 10) {
       image_num = "0" + rng_num.toString();
@@ -27,11 +28,6 @@ class _NextPageState extends State<NextPage> {
     //     Image.network('https://dream-web-97613.web.app/assets/img/card_1.jpeg');
 
     super.initState();
-  }
-
-  void _saveImage(url) async {
-    var response = await get(url);
-    print(response);
   }
 
   @override
@@ -78,14 +74,31 @@ class Buttons extends StatefulWidget {
 }
 
 class _ButtonsState extends State<Buttons> {
-  void _saveImage(url) async {
-    var response = await get(url);
+  void _saveImage(imageUrl) async {
+    var response = await get(imageUrl);
     final DateTime now = DateTime.now();
     print(now);
-    js.context.callMethod("webSaveAs", [
-      html.Blob([response.bodyBytes]),
-      "$now.jpg"
-    ]);
+    // js.context.callMethod("webSaveAs", [
+    //   html.Blob([response.bodyBytes]),
+    //   "$now.jpg"
+    // ]);
+
+    // prepare
+
+    final blob = html.Blob([response.bodyBytes]);
+    final url = html.Url.createObjectUrlFromBlob(blob);
+    final anchor = html.document.createElement('a') as html.AnchorElement
+      ..href = url
+      ..style.display = 'none'
+      ..download = '$now.jpg';
+    html.document.body.children.add(anchor);
+
+    // download
+    anchor.click();
+
+    // cleanup
+    html.document.body.children.remove(anchor);
+    html.Url.revokeObjectUrl(url);
   }
 
   @override

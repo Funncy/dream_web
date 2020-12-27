@@ -6,9 +6,9 @@ void main() {
   runApp(MyApp());
 }
 
-// TODO: 이미지 다운로드
 // TODO: 카카오톡 링크 연결
-// TODO : 2초 로딩 만들기 (보류 - 디자인...)
+// TODO : 2초 로딩 만들기 필수...
+// TODO : 이미지 저장 앱 갤러리로 되도록 (image_picker 도입)
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
