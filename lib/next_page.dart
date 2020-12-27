@@ -3,6 +3,8 @@ import 'dart:math';
 import 'dart:js' as js;
 import 'dart:html' as html;
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dream_web/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -22,10 +24,88 @@ class _NextPageState extends State<NextPage> {
     if (rng_num < 10) {
       image_num = "0" + rng_num.toString();
     }
-    image = Image.network('assets/img/card_$image_num.jpeg');
+    // image = Image.network('assets/img/card_$image_num.jpeg');
+    image = FutureBuilder(
+        future: get('assets/img/card_$image_num.jpeg'),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              return FlipCard(
+                frontWidget: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                        height: 10,
+                        width: 100,
+                        child: LinearProgressIndicator()),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Text("말씀을 뽑는 중이에요~"),
+                    )
+                  ],
+                ),
+                backWidget: Image.memory(snapshot.data.bodyBytes),
+              );
+            case ConnectionState.none:
+            case ConnectionState.active:
+            case ConnectionState.waiting:
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      height: 100,
+                      width: 100,
+                      child: LinearProgressIndicator()),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text("말씀을 뽑는 중이에요~"),
+                  )
+                ],
+              );
+          }
+          return null;
+        });
+
+    // image = CachedNetworkImage(
+    //   imageUrl: 'assets/img/card_$image_num.jpeg',
+    //   placeholder: (context, url) => Center(
+    //     child: FlipCard(
+    //       frontWidget: Container(
+    //         color: Colors.green[200],
+    //         child: Center(
+    //           child: Text(
+    //             "FRONT side.",
+    //           ),
+    //         ),
+    //       ),
+    //       backWidget: Container(
+    //         color: Colors.yellow[200],
+    //         child: Center(
+    //           child: Text(
+    //             "BACK side.",
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+
+    //     Column(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   crossAxisAlignment: CrossAxisAlignment.center,
+    //   children: [
+    //     Container(
+    //         height: 100, width: 100, child: CircularProgressIndicator()),
+    //     Padding(
+    //       padding: const EdgeInsets.only(top: 10),
+    //       child: Text("말씀을 뽑는 중이에요~"),
+    //     )
+    //   ],
+    // )),
+    //   errorWidget: (context, url, error) => Icon(Icons.error),
+    // );
     image_url = 'assets/img/card_$image_num.jpeg';
-    // image =
-    //     Image.network('https://dream-web-97613.web.app/assets/img/card_1.jpeg');
 
     super.initState();
   }
@@ -39,7 +119,7 @@ class _NextPageState extends State<NextPage> {
         child: Center(
           child: SingleChildScrollView(
             child: Container(
-                decoration: BoxDecoration(color: Colors.blueAccent),
+                // decoration: BoxDecoration(color: Colors.blueAccent),
                 constraints: BoxConstraints(
                   maxWidth: 450,
                 ),
@@ -47,7 +127,15 @@ class _NextPageState extends State<NextPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      image,
+                      Container(
+                          margin: const EdgeInsets.only(
+                              top: 50, left: 50, right: 50, bottom: 10),
+                          // color: Colors.white,
+                          constraints:
+                              BoxConstraints(maxWidth: 400, maxHeight: 669),
+                          width: size.width * 0.8,
+                          height: (size.width * 0.8) * 1.67,
+                          child: image),
                       // 카카오톡 공유하기
                       // 다시 뽑기
                       // 이미지 저장하기
@@ -86,11 +174,12 @@ class _ButtonsState extends State<Buttons> {
     // prepare
 
     final blob = html.Blob([response.bodyBytes]);
-    final url = html.Url.createObjectUrlFromBlob(blob);
+    // final url = html.Url.createObjectUrlFromBlob(blob);
+    // final url = '/assets/img/card_01.jpeg';
     final anchor = html.document.createElement('a') as html.AnchorElement
-      ..href = url
-      ..style.display = 'none'
-      ..download = '$now.jpg';
+      ..href = imageUrl
+      ..style.display = 'none';
+    // ..download = '$now.jpg';
     html.document.body.children.add(anchor);
 
     // download
@@ -98,7 +187,7 @@ class _ButtonsState extends State<Buttons> {
 
     // cleanup
     html.document.body.children.remove(anchor);
-    html.Url.revokeObjectUrl(url);
+    html.Url.revokeObjectUrl(imageUrl);
   }
 
   @override
@@ -106,7 +195,6 @@ class _ButtonsState extends State<Buttons> {
     return Column(
       children: [
         Container(
-            margin: const EdgeInsets.only(top: 20),
             child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),

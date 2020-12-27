@@ -1,4 +1,5 @@
 import 'package:dream_web/first_page.dart';
+import 'package:dream_web/flip_card.dart';
 import 'package:dream_web/next_page.dart';
 import 'package:flutter/material.dart';
 
@@ -7,8 +8,8 @@ void main() {
 }
 
 // TODO: 카카오톡 링크 연결
-// TODO : 2초 로딩 만들기 필수...
-// TODO : 이미지 저장 앱 갤러리로 되도록 (image_picker 도입)
+// TODO : 이미지 저장 문구 추가
+// TODO : 말씀카드 리사이징
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
