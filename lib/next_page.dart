@@ -12,7 +12,6 @@ import 'package:dream_web/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:speech_bubble/speech_bubble.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class NextPage extends StatefulWidget {
   @override
