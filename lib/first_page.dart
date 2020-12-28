@@ -1,3 +1,4 @@
+import 'package:dream_web/components/button.dart';
 import 'package:dream_web/next_page.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +32,6 @@ class _FirstPageState extends State<FirstPage> {
             constraints:
                 BoxConstraints(maxWidth: 450, maxHeight: 900, minHeight: 550),
             decoration: BoxDecoration(
-                color: Colors.amber,
                 image:
                     DecorationImage(image: backgroundImage, fit: BoxFit.cover)),
             height: size.height,
@@ -59,7 +59,8 @@ class _FirstPageState extends State<FirstPage> {
                                 padding: const EdgeInsets.only(top: 10),
                                 child: Text(
                                   '지인들과 함께 내게 주신 말씀을 나눠보세요!',
-                                  style: TextStyle(fontSize: 17),
+                                  style: TextStyle(
+                                      fontSize: 17, color: Colors.white),
                                 ),
                               )
                             ],
@@ -88,29 +89,17 @@ class BottomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         margin: const EdgeInsets.only(bottom: 50),
-        child: RaisedButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            onPressed: () {
-              Navigator.push(
-                context,
-                _createRoute(),
-              );
-            },
-            color: Colors.amber,
-            child: Padding(
-              padding: const EdgeInsets.all(13),
-              child: Container(
-                width: 230,
-                height: 25,
-                child: Center(
-                  child: Text(
-                    "랜덤 말씀 뽑기",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                ),
-              ),
-            )));
+        child: Button(
+          onPressed: () {
+            Navigator.push(
+              context,
+              _createRoute(),
+            );
+          },
+          width: 170,
+          height: 20,
+          text: "새해 말씀 뽑기",
+        ));
   }
 }
 

@@ -1,11 +1,8 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'dart:js' as js;
 import 'dart:html' as html;
-import 'dart:typed_data';
 
-import 'package:async/async.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dream_web/components/button.dart';
 import 'package:dream_web/flip_card.dart';
@@ -27,14 +24,6 @@ class _NextPageState extends State<NextPage> {
   var bibleImage;
 
   var image_num;
-
-  final AsyncMemoizer _memoizer = AsyncMemoizer();
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   @override
   void initState() {
     // TODO: implement initState
@@ -51,15 +40,111 @@ class _NextPageState extends State<NextPage> {
 
     print('image num = $image_num');
 
+    // image = Image.network('assets/img/card_$image_num.jpeg');
+    image = FutureBuilder(
+        future: get('assets/img/card_$image_num.jpg'),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              return FlipCard(
+                frontWidget: Container(
+                  color: Colors.amber,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30, bottom: 80),
+                        child: Container(
+                          width: 280,
+                          child: titleImage,
+                        ),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(width: 150, child: bibleImage),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text("말씀을 찾는 중입니다"),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                backWidget: Image.memory(snapshot.data.bodyBytes),
+              );
+            case ConnectionState.none:
+            case ConnectionState.active:
+            case ConnectionState.waiting:
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30, bottom: 80),
+                    child: Container(
+                      width: 280,
+                      child: titleImage,
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(width: 150, child: bibleImage),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Text("말씀을 찾는 중입니다"),
+                      )
+                    ],
+                  )
+                ],
+              );
+          }
+          return null;
+        });
+
+    // image = CachedNetworkImage(
+    //   imageUrl: 'assets/img/card_$image_num.jpeg',
+    //   placeholder: (context, url) => Center(
+    //     child: FlipCard(
+    //       frontWidget: Container(
+    //         color: Colors.green[200],
+    //         child: Center(
+    //           child: Text(
+    //             "FRONT side.",
+    //           ),
+    //         ),
+    //       ),
+    //       backWidget: Container(
+    //         color: Colors.yellow[200],
+    //         child: Center(
+    //           child: Text(
+    //             "BACK side.",
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+
+    //     Column(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   crossAxisAlignment: CrossAxisAlignment.center,
+    //   children: [
+    //     Container(
+    //         height: 100, width: 100, child: CircularProgressIndicator()),
+    //     Padding(
+    //       padding: const EdgeInsets.only(top: 10),
+    //       child: Text("말씀을 뽑는 중이에요~"),
+    //     )
+    //   ],
+    // )),
+    //   errorWidget: (context, url, error) => Icon(Icons.error),
+    // );
     image_url = 'assets/img/card_$image_num.jpg';
 
     super.initState();
-  }
-
-  Future<dynamic> _fetchData(var imageUrl) {
-    return this._memoizer.runOnce(() async {
-      return get(imageUrl);
-    });
   }
 
   @override
@@ -77,7 +162,7 @@ class _NextPageState extends State<NextPage> {
             constraints:
                 BoxConstraints(maxWidth: 450, minHeight: size.height + 100),
             child: FutureBuilder(
-                future: _fetchData('assets/img/card_$image_num.jpg'),
+                future: get('assets/img/card_$image_num.jpg'),
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.done:

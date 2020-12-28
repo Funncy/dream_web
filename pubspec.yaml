@@ -30,6 +30,8 @@ dependencies:
   http: ^0.12.2
   cached_network_image: ^2.5.0
   speech_bubble: ^0.0.7
+  url_launcher: ^5.7.10
+  async: ^2.4.2
 
 dev_dependencies:
   flutter_test:
