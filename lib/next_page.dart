@@ -18,11 +18,15 @@ class _NextPageState extends State<NextPage> {
   var image;
   var image_url;
   var backgroundImage;
+  var titleImage;
+  var bibleImage;
   @override
   void initState() {
     // TODO: implement initState
 
     backgroundImage = NetworkImage('assets/img/2_background.jpg');
+    titleImage = Image.network('assets/img/2_title.png');
+    bibleImage = Image.network('assets/img/2_bible.png');
 
     var rng_num = new Random().nextInt(5 - 1) + 1;
     var image_num = rng_num.toString();
@@ -39,17 +43,26 @@ class _NextPageState extends State<NextPage> {
                 frontWidget: Container(
                   color: Colors.amber,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                          height: 10,
-                          width: 100,
-                          child: LinearProgressIndicator()),
                       Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Text("말씀을 뽑는 중이에요~"),
-                      )
+                        padding: const EdgeInsets.only(top: 30, bottom: 80),
+                        child: Container(
+                          width: 280,
+                          child: titleImage,
+                        ),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(width: 150, child: bibleImage),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text("말씀을 찾는 중입니다"),
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -62,11 +75,22 @@ class _NextPageState extends State<NextPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                      height: 10, width: 100, child: LinearProgressIndicator()),
                   Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Text("말씀을 뽑는 중이에요~"),
+                    padding: const EdgeInsets.only(top: 30, bottom: 80),
+                    child: Container(
+                      width: 280,
+                      child: titleImage,
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(width: 150, child: bibleImage),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Text("말씀을 찾는 중입니다"),
+                      )
+                    ],
                   )
                 ],
               );
@@ -204,6 +228,15 @@ class _ButtonsState extends State<Buttons> {
     return Column(
       children: [
         Container(
+          margin: const EdgeInsets.only(bottom: 20),
+          child: SpeechBubble(
+              color: Colors.amber,
+              nipLocation: NipLocation.BOTTOM,
+              child: Container(
+                child: Text("이미지가 뜨면 화면을 꾹 눌러주세요. 이미지 저장이 가능합니다."),
+              )),
+        ),
+        Container(
             child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),
@@ -269,15 +302,6 @@ class _ButtonsState extends State<Buttons> {
                     ),
                   ),
                 ))),
-        Container(
-          margin: const EdgeInsets.only(bottom: 20),
-          child: SpeechBubble(
-              color: Colors.amber,
-              nipLocation: NipLocation.TOP,
-              child: Container(
-                child: Text("이미지가 뜨면 화면을 꾹 눌러주세요. 이미지 저장이 가능합니다."),
-              )),
-        )
       ],
     );
   }
