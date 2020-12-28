@@ -17,9 +17,13 @@ class NextPage extends StatefulWidget {
 class _NextPageState extends State<NextPage> {
   var image;
   var image_url;
+  var backgroundImage;
   @override
   void initState() {
     // TODO: implement initState
+
+    backgroundImage = NetworkImage('assets/img/2_background.jpg');
+
     var rng_num = new Random().nextInt(5 - 1) + 1;
     var image_num = rng_num.toString();
     if (rng_num < 10) {
@@ -32,19 +36,22 @@ class _NextPageState extends State<NextPage> {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               return FlipCard(
-                frontWidget: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                        height: 10,
-                        width: 100,
-                        child: LinearProgressIndicator()),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Text("말씀을 뽑는 중이에요~"),
-                    )
-                  ],
+                frontWidget: Container(
+                  color: Colors.amber,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                          height: 10,
+                          width: 100,
+                          child: LinearProgressIndicator()),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Text("말씀을 뽑는 중이에요~"),
+                      )
+                    ],
+                  ),
                 ),
                 backWidget: Image.memory(snapshot.data.bodyBytes),
               );
@@ -113,11 +120,14 @@ class _NextPageState extends State<NextPage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Container(
-        height: size.height,
         child: Center(
           child: SingleChildScrollView(
             child: Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: backgroundImage, fit: BoxFit.cover)),
                 // decoration: BoxDecoration(color: Colors.blueAccent),
                 constraints: BoxConstraints(
                   maxWidth: 450,

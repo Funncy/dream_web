@@ -7,16 +7,16 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
-  var lightImage;
+  var backgroundImage;
   var titleImage;
   var logoImage;
 
   @override
   void initState() {
     // TODO: implement initState
-    lightImage = Image.network('assets/img/main_light.png');
-    titleImage = Image.network('assets/img/title.png');
-    logoImage = Image.network('assets/img/dream_logo.jpg');
+    backgroundImage = NetworkImage('assets/img/1_background.jpg');
+    titleImage = Image.network('assets/img/1_title.png');
+    logoImage = Image.network('assets/img/1_logo.png');
     super.initState();
   }
 
@@ -24,41 +24,42 @@ class _FirstPageState extends State<FirstPage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
         child: Center(
           child: Container(
             constraints:
                 BoxConstraints(maxWidth: 450, maxHeight: 900, minHeight: 550),
-            decoration: BoxDecoration(color: Colors.amber),
+            decoration: BoxDecoration(
+                color: Colors.amber,
+                image:
+                    DecorationImage(image: backgroundImage, fit: BoxFit.cover)),
             height: size.height,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  height: 400,
+                  height: 300,
+                  margin: const EdgeInsets.only(top: 50),
                   child: Stack(
                     children: [
                       Container(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(width: 300, child: logoImage),
-                      ),
-                      Container(
                         alignment: Alignment.topCenter,
-                        child: lightImage,
+                        child: Container(width: 100, child: logoImage),
                       ),
                       Container(
-                        alignment: Alignment.center,
+                        alignment: Alignment.bottomCenter,
                         child: Container(
                           height: 200,
                           child: Column(
                             children: [
-                              Container(width: 200, child: titleImage),
+                              Container(width: 330, child: titleImage),
                               Padding(
-                                padding: const EdgeInsets.only(top: 20),
+                                padding: const EdgeInsets.only(top: 10),
                                 child: Text(
                                   '지인들과 함께 내게 주신 말씀을 나눠보세요!',
-                                  style: TextStyle(fontSize: 13),
+                                  style: TextStyle(fontSize: 17),
                                 ),
                               )
                             ],
