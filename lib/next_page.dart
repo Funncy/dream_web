@@ -4,6 +4,7 @@ import 'dart:math';
 import 'dart:js' as js;
 import 'dart:html' as html;
 import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:async/async.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -12,6 +13,8 @@ import 'package:dream_web/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:speech_bubble/speech_bubble.dart';
+
+import 'components/wating_card_widget.dart';
 
 class NextPage extends StatefulWidget {
   @override
@@ -23,7 +26,7 @@ class _NextPageState extends State<NextPage> {
   var image_url;
   var backgroundImage;
   var titleImage;
-  var bibleImage;
+  var bellImage;
 
   var image_num;
 
@@ -38,20 +41,23 @@ class _NextPageState extends State<NextPage> {
   void initState() {
     // TODO: implement initState
 
-    backgroundImage = NetworkImage('assets/img/2_background.jpg');
-    titleImage = Image.network('assets/img/2_title.png');
-    bibleImage = Image.network('assets/img/2_bible.png');
+    backgroundImage = NetworkImage('assets/img/background.png');
+    titleImage = Image.network('assets/img/title_2.png');
+    bellImage = Image.network('assets/img/bell.png');
 
-    var rng_num = new Random().nextInt(112 - 1) + 1;
+    int cardNum = 155;
+
+    var rng_num = new Random().nextInt(cardNum - 1) + 1;
     image_num = rng_num.toString();
     if (rng_num < 10) {
-      image_num = "0" + rng_num.toString();
+      // image_num = "0" + rng_num.toString();
     }
 
     print('image num = $image_num');
 
-    image_url = 'assets/img/card_$image_num.jpg';
+    image_url = 'assets/img/card/$image_num.jpg';
 
+    print('image url = $image_url');
     super.initState();
   }
 
@@ -75,108 +81,75 @@ class _NextPageState extends State<NextPage> {
             // decoration: BoxDecoration(color: Colors.blueAccent),
             constraints:
                 BoxConstraints(maxWidth: 450, minHeight: size.height + 100),
-            child: FutureBuilder(
-                future: _fetchData('assets/img/card_$image_num.jpg'),
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.done:
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(
-                                top: 50, left: 50, right: 50, bottom: 10),
-                            // color: Colors.white,
-                            constraints:
-                                BoxConstraints(maxWidth: 400, maxHeight: 669),
-                            width: size.width * 0.8,
-                            height: (size.width * 0.8) * 1.67,
-                            child: FlipCard(
-                              frontWidget: Container(
-                                color: Colors.white.withOpacity(0.7),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 30, bottom: 80),
-                                      child: Container(
-                                        width: 280,
-                                        child: titleImage,
-                                      ),
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                            width: 150, child: bibleImage),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 10),
-                                          child: Text("말씀을 찾는 중입니다"),
-                                        )
-                                      ],
-                                    ),
-                                  ],
+            child: Stack(
+              children: [
+                new BackdropFilter(
+                  filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                  child: new Container(
+                    decoration:
+                        new BoxDecoration(color: Colors.white.withOpacity(0.0)),
+                  ),
+                ),
+                FutureBuilder(
+                    future: _fetchData('assets/img/card/$image_num.jpg'),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.done:
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(
+                                    top: 50, left: 50, right: 50, bottom: 10),
+                                constraints: BoxConstraints(
+                                    maxWidth: 400, maxHeight: 669),
+                                width: size.width * 0.8,
+                                height: (size.width * 0.8) * 1.67,
+                                decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.7),
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: FlipCard(
+                                  frontWidget: WatingCardWidget(
+                                      size: size,
+                                      bellImage: bellImage,
+                                      titleImage: titleImage),
+                                  backWidget: Image.network(
+                                    image_url,
+                                    fit: BoxFit.cover,
+                                    width: size.width * 0.8,
+                                    height: (size.width * 0.8) * 1.67,
+                                  ),
                                 ),
                               ),
-                              backWidget: Image.memory(snapshot.data.bodyBytes),
-                            ),
-                          ),
-                          Buttons(
-                            image_url: image_url,
-                          )
-                        ],
-                      );
-                    case ConnectionState.none:
-                    case ConnectionState.active:
-                    case ConnectionState.waiting:
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
+                              Buttons(
+                                image_url: image_url,
+                              )
+                            ],
+                          );
+                        // case ConnectionState.done:
+                        case ConnectionState.none:
+                        case ConnectionState.active:
+                        case ConnectionState.waiting:
+                          return Container(
                             margin: const EdgeInsets.only(
                                 top: 50, left: 50, right: 50, bottom: 10),
-                            color: Colors.white.withOpacity(0.7),
                             constraints:
                                 BoxConstraints(maxWidth: 400, maxHeight: 669),
                             width: size.width * 0.8,
                             height: (size.width * 0.8) * 1.67,
-                            child: Container(
-                              color: Colors.white.withOpacity(0.7),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 30, bottom: 80),
-                                    child: Container(
-                                      width: 280,
-                                      child: titleImage,
-                                    ),
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(width: 150, child: bibleImage),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 10),
-                                        child: Text("말씀을 찾는 중입니다"),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                  }
-                  return null;
-                })),
+                            decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.7),
+                                borderRadius: BorderRadius.circular(15)),
+                            child: WatingCardWidget(
+                                size: size,
+                                bellImage: bellImage,
+                                titleImage: titleImage),
+                          );
+                      }
+                      return null;
+                    }),
+              ],
+            )),
       )),
     );
   }
@@ -250,7 +223,7 @@ class _ButtonsState extends State<Buttons> {
               _saveImage(widget.image_url);
             },
             width: 170,
-            height: 20,
+            height: 25,
           ),
         ),
         Container(
@@ -261,7 +234,7 @@ class _ButtonsState extends State<Buttons> {
               Navigator.of(context).pop();
             },
             width: 170,
-            height: 20,
+            height: 25,
           ),
         ),
         Container(
@@ -288,7 +261,7 @@ class _ButtonsState extends State<Buttons> {
               html.Url.revokeObjectUrl(youtubeUrl);
             },
             width: 170,
-            height: 20,
+            height: 25,
           ),
         ),
       ],

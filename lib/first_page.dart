@@ -15,8 +15,11 @@ class _FirstPageState extends State<FirstPage> {
   @override
   void initState() {
     // TODO: implement initState
-    backgroundImage = NetworkImage('assets/img/1_background.jpg');
-    titleImage = Image.network('assets/img/1_title.png');
+    backgroundImage = NetworkImage('assets/img/background.png');
+    titleImage = Image.network(
+      'assets/img/title.png',
+      fit: BoxFit.contain,
+    );
     logoImage = Image.network('assets/img/1_logo.png');
     super.initState();
   }
@@ -42,7 +45,7 @@ class _FirstPageState extends State<FirstPage> {
                 Container(
                   height: 300,
                   margin: const EdgeInsets.only(top: 50),
-                  child: Stack(
+                  child: Column(
                     children: [
                       Container(
                         alignment: Alignment.topCenter,
@@ -51,10 +54,11 @@ class _FirstPageState extends State<FirstPage> {
                       Container(
                         alignment: Alignment.bottomCenter,
                         child: Container(
-                          height: 200,
+                          // height: 200,
                           child: Column(
                             children: [
-                              Container(width: 330, child: titleImage),
+                              Container(
+                                  width: 330, height: 200, child: titleImage),
                               Padding(
                                 padding: const EdgeInsets.only(top: 10),
                                 child: Text(
@@ -97,7 +101,7 @@ class BottomButton extends StatelessWidget {
             );
           },
           width: 170,
-          height: 20,
+          height: 25,
           text: "새해 말씀 뽑기",
         ));
   }
