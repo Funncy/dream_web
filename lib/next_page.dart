@@ -240,7 +240,7 @@ class _ButtonsState extends State<Buttons> {
         Container(
           margin: const EdgeInsets.only(top: 20, bottom: 20),
           child: Button(
-            text: "꿈의교회 유튜브 바로가기",
+            text: "꿈의교회 유튜브 채널",
             onPressed: () async {
               // 꿈교 유튜브 보내기
               var youtubeUrl =
